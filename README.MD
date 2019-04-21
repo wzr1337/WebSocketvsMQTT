@@ -14,6 +14,24 @@ As per design the MQTT service will always hav a broker between client and servi
 
 While WebSockets support compression on protofol level (per-message-deflate), the client must compress the payload before sending it (application level) in the MQTT case.
 
+## How to run it
+
+First install dependencies
+
+```shell
+$ npm install
+```
+
+then run the server
+
+```shell
+$ npm run start:server
+```
+
+Finally open the UI in your browser on port 3000
+
+e.g. http://127.0.0.1:3000
+
 ## Tests
 
 JSON payload serialized
