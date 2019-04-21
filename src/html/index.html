@@ -1,0 +1,155 @@
+<html>
+  <head>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script src="client.js"></script>
+    <style>
+    body {
+      font-family: Antenna, Helvetica, Arial, sans-serif;
+    }
+    td {
+      padding-left: 0.3rem;
+      padding-right: 0.3rem;
+    }
+    td.min {
+      padding-left: 1.2rem;
+    }
+    td.max { 
+      padding-right: 1.2rem; 
+    }
+    </style>
+  </head>
+
+  <body>
+    <h1>WebSocket performance tester</h1>
+    <p>
+      This tool sends a RSI encoded fake Message to the server and evaluates the travel time back and forth. This of course means that the measurements include JSON.stringify() and JSON.parse() in the process. The tool subtracts these times.
+    </p>
+    <p id="fakeMessageSize"></p>
+    <pre id="fakeMessage"></pre>
+    <table>
+      <tr>
+        <th style="min-width:100px">
+          samples
+        </th>	  
+        <th colspan="3" style="min-width:200px">
+          stringify
+        </th>
+        <th colspan="3" style="min-width:200px">
+          send
+        </th>
+        <th colspan="3" style="min-width:200px">
+          transport
+        </th>
+        <th colspan="3" style="min-width:200px">
+          parse
+        </th>
+        <th colspan="3" style="min-width:200px">
+          Total time spent
+        </th>		
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td align="center" class="min">
+          min./[ms]
+        </td>
+        <td align="center" class="avg">
+          avg./[ms]
+        </td>
+        <td align="center" class="max">
+          max./[ms]
+        </td>
+        <td align="center" class="min">
+          min./[ms]
+        </td>
+        <td align="center" class="avg">
+          avg./[ms]
+        </td>
+        <td align="center" class="max">
+          max./[ms]
+        </td>
+        <td align="center" class="min">
+          min./[ms]
+        </td>
+        <td align="center" class="avg">
+          avg./[ms]
+        </td>
+        <td align="center" class="max">
+          max./[ms]
+        </td>
+        <td align="center" class="min">
+          min./[ms]
+        </td>
+        <td align="center" class="avg">
+          avg./[ms]
+        </td>
+        <td align="center" class="max">
+          max./[ms]
+        </td>
+        <td align="center" class="min">
+          min./[ms]
+        </td>
+        <td align="center" class="avg">
+          avg./[ms]
+        </td>
+        <td align="center" class="max">
+          max./[ms]
+        </td>
+      </tr>	  
+      <tr>
+        <td id="val_samples" align="center">
+          0
+        </td>	  
+        <td id="val_stringify_min" align="right" class="min">
+          inf
+        </td>
+        <td id="val_stringify_avg" align="center" class="avg">
+          inf
+        </td>
+        <td id="val_stringify_max" align="left" class="max">
+          inf
+        </td>
+        <td id="val_send_min" align="right" class="min">
+          inf
+        </td>
+        <td id="val_send_avg" align="center" class="avg">
+          inf
+        </td>
+        <td id="val_send_max" align="left" class="max">
+          inf
+        </td>
+        <td id="val_transport_min" align="right" class="min">
+          inf
+        </td>
+        <td id="val_transport_avg" align="center" class="avg">
+          inf
+        </td>
+        <td id="val_transport_max" align="left" class="max">
+          inf
+        </td>
+        <td id="val_parse_min" align="right" class="min">
+          inf
+        </td>
+        <td id="val_parse_avg" align="center" class="avg">
+          inf
+        </td>
+        <td id="val_parse_max" align="left" class="max">
+          inf
+        </td>
+        <td id="val_sum_min" align="right" class="min">
+          inf
+        </td>
+        <td id="val_sum_avg" align="center" class="avg">
+          inf
+        </td>
+        <td id="val_sum_max" align="left" class="max">
+          inf
+        </td>
+      </tr>
+    </table>
+    <p>
+      <button id="btnStart" type="button">Start</button>
+      <button id="btnStop" type="button" disabled>Stop</button>
+	  <button id="btnReset" type="button">Reset</button>
+    </p>
+  </body>
+</html>

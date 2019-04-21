@@ -1,0 +1,22 @@
+{
+  "name": "wsvsmqtt",
+  "version": "1.0.0",
+  "description": "A Performance tester",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:server": "node src/index.js"
+  },
+  "author": "Dr. Patrick Bartsch",
+  "license": "MIT",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.16.4",
+    "lorem-ipsum": "^2.0.1",
+    "mosca": "^2.8.3",
+    "mqtt": "^2.18.8",
+    "pino-pretty": "^2.6.0",
+    "redis": "^2.8.0",
+    "ws": "^6.2.1"
+  }
+}
