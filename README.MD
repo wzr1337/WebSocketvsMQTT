@@ -18,6 +18,7 @@ While WebSockets support compression on protofol level (per-message-deflate), th
 
 JSON payload serialized
 
+```
 throughput MByte/s with compression
   package size 100 Byte / 1kB / 10kB / 128kB
 throughput MByte/s without compression
@@ -30,6 +31,8 @@ bandwidth consumed MByte/1000msg with compression (incl. protocol layer overhead
   package size 100 Byte / 1kB / 10kB / 128kB
 bandwidth consumed MByte/1000msg compression (incl. protocol layer overhead)
   package size 100 Byte / 1kB / 10kB / 128kB
+```
+
 
 | protocol   | throughput msg/s with compression  |   |   |   |
 |------------|---|---|---|---|
