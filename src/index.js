@@ -1,10 +1,10 @@
 const express = require('express');
 const http = require('http');
 const path = require('path');
-const url = require('url');
-const WebSocket = require('ws');
+const wsEcho = require('./wsEcho')
 const broker = require("./broker");
 const mqtt = require("./mqttTester");
+const rsi = require("./rsiTester");
 const samples = require("./samples");
 const compression = require('compression');
 const bodyParser = require('body-parser');
@@ -30,26 +30,19 @@ app.post('/mqtt/testruns/', mqtt.CREATEElement);
 app.get('/mqtt/testruns/:id', mqtt.READElement);
 app.post('/mqtt/testruns/:id', mqtt.UPDATEElement);
 
+app.get('/rsi/testruns/', rsi.READCollection);
+app.post('/rsi/testruns/', rsi.CREATEElement);
+app.get('/rsi/testruns/:id', rsi.READElement);
+app.post('/rsi/testruns/:id', rsi.UPDATEElement);
+
 
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
-
-wss.on('connection', function connection(ws, req) {
-  const location = url.parse(req.url, true);
-  // You might use location.query.access_token to authenticate or share sessions
-  // or req.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
-  const ip = req.connection.remoteAddress;
-  console.log(`New client ${ip}`);
-  ws.on('message', function incoming(message) {
-    ws.send(message);
-  });
-});
-
 
 server.listen(3000, function listening() {
   let host = server.address().address == "::" ? "127.0.0.1" : server.address().address;
   console.log("starting broker");
   broker.start();
+  wsEcho.start(server);
   console.log(`WebSocket listening on http://${host}:${server.address().port}/`);
   console.log(`Serving UI on http://${host}:${server.address().port}/index.html`);
 });

@@ -50,7 +50,6 @@ $( document ).ready(function() {
   const fctAvg= function(curr, previous, samples) { return (previous * samples + curr) / (samples + 1); }
   const fctMax= function(curr, previous) { return (previous < curr) ? curr : previous; }  
 
-
   ws = new WebSocket("ws://" + location.host);
   ws.onopen = function () {
     ws.onmessage = function(data) {
