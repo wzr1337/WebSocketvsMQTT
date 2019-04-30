@@ -1,38 +1,27 @@
 // globals  
-var d_stringify_min, d_stringify_avg, d_stringify_max;
-var d_send_min, d_send_avg, d_send_max;
-var d_transport_min, d_transport_avg, d_transport_max;
-var d_parse_min, d_parse_avg, d_parse_max;
-var d_sum_min, d_sum_avg, d_sum_max;
-var datapoints;
+var results = {};
+const initializer =  {
+  min : Infinity,
+  avg : 0,
+  max : -Infinity
+}
+
+const MESSAGESIZE = "10k";
 
 const resetData = function() {
-  d_stringify_min = Infinity;
-  d_stringify_avg = 0;
-  d_stringify_max = -Infinity;
-
-  d_send_min = Infinity;
-  d_send_avg = 0;
-  d_send_max = -Infinity;
-
-  d_transport_min = Infinity;
-  d_transport_avg = 0;
-  d_transport_max = -Infinity;  
-  
-  d_parse_min = Infinity;
-  d_parse_avg = 0;
-  d_parse_max = -Infinity;  
-
-  d_sum_min = Infinity;
-  d_sum_avg = 0;
-  d_sum_max = -Infinity;  
-  
-  datapoints = 0;
+  results = {
+    stringify : initializer,
+    send : initializer,
+    transport : initializer,
+    parse : initializer,
+    sum : initializer,
+    datapoints : 0
+  }
 }
 resetData();
 
 /**
- * Get the yize of a string in Bytes
+ * Get the size of a string in Bytes
  *
  * @param {string} str the input string
  * @param {boolean} [pretty=false] return the bytes in human readable format
@@ -72,32 +61,42 @@ $( document ).ready(function() {
       
   	  // t_born - t_stringified - t_sent - t_received - t_parsed
   	  
-  	  var d_stringify_curr = messagesLog[perf.id].t_stringified - perf.t_born;
-  	  d_stringify_min = fctMin(d_stringify_min, d_stringify_curr);
-  	  d_stringify_avg = fctAvg(d_stringify_curr, d_stringify_avg, datapoints);
-      d_stringify_max = fctMax(d_stringify_max, d_stringify_curr);
-      
-  	  var d_send_curr = messagesLog[perf.id].t_sent - messagesLog[perf.id].t_stringified;
-  	  d_send_min = fctMin(d_send_min, d_send_curr);
-  	  d_send_avg = fctAvg(d_send_curr, d_send_avg, datapoints);
-      d_send_max = fctMax(d_send_max, d_send_curr);
+      const d_stringify_curr = messagesLog[perf.id].t_stringified - perf.t_born;
+      results.stringify = {
+        min : fctMin(results.stringify.min, d_stringify_curr),
+        avg : fctAvg(d_stringify_curr, results.stringify.avg, results.datapoints),
+        max : fctMax(results.stringify.max, d_stringify_curr)
+      }
 
-  	  var d_transport_curr = t_received - messagesLog[perf.id].t_sent;
-  	  d_transport_min = fctMin(d_transport_min, d_transport_curr);
-  	  d_transport_avg = fctAvg(d_transport_curr, d_transport_avg, datapoints);
-      d_transport_max = fctMax(d_transport_max, d_transport_curr);
+  	  const d_send_curr = messagesLog[perf.id].t_sent - messagesLog[perf.id].t_stringified;
+  	  results.send = {
+        min : fctMin(results.send.min, d_send_curr),
+  	    avg : fctAvg(d_send_curr, results.send.avg, results.datapoints),
+        max : fctMax(results.send.max, d_send_curr)
+      }
 
-  	  var d_parse_curr = t_parsed - t_received;
-  	  d_parse_min = fctMin(d_parse_min, d_parse_curr);
-  	  d_parse_avg = fctAvg(d_parse_curr, d_parse_avg, datapoints);
-      d_parse_max = fctMax(d_parse_max, d_parse_curr);
+  	  const d_transport_curr = t_received - messagesLog[perf.id].t_sent;
+  	  results.transport = {
+        min : fctMin(results.transport.min, d_transport_curr),
+    	  avg : fctAvg(d_transport_curr, results.transport.avg, results.datapoints),
+        max : fctMax(results.transport.max, d_transport_curr)
+      }
 
-  	  var d_sum_curr = t_parsed - perf.t_born;
-  	  d_sum_min = fctMin(d_sum_min, d_sum_curr);
-  	  d_sum_avg = fctAvg(d_sum_curr, d_sum_avg, datapoints);
-      d_sum_max = fctMax(d_sum_max, d_sum_curr);
+  	  const d_parse_curr = t_parsed - t_received;
+  	  results.parse ={
+        min : fctMin(results.parse.min, d_parse_curr),
+  	    avg : fctAvg(d_parse_curr, results.parse.avg, results.datapoints),
+        max : fctMax(results.parse.max, d_parse_curr)
+      }
+
+  	  const d_sum_curr = t_parsed - perf.t_born;
+  	  results.sum = {
+        min : fctMin(results.sum.min, d_sum_curr),
+  	    avg : fctAvg(d_sum_curr, results.sum.avg, results.datapoints),
+        max : fctMax(results.sum.max, d_sum_curr)
+      }
   	  
-  	  datapoints = datapoints + 1;
+  	  results.datapoints = results.datapoints + 1;
 	  
       delete messagesLog[perf.id];
     };
@@ -109,7 +108,7 @@ $( document ).ready(function() {
     console.log("Measurement started");
     toggleButtons();
 
-    let payload = await $.get(`${window.location.origin}/rsi/samples/`,{size: "128k"});
+    let payload = await $.get(`${window.location.origin}/rsi/samples/`,{size: MESSAGESIZE});
     // add some performance counter (should be abvoided as being overhead)
     payload.perf= {
       id: 0,
@@ -154,27 +153,27 @@ $( document ).ready(function() {
 
 const updateUI = () => {
   //setInterval(function() {
-    $('#val_samples').text(datapoints);
+    $('#val_samples').text(results.datapoints);
   
-    $('#val_stringify_min').text(d_stringify_min.toFixed(3));
-    $('#val_stringify_avg').text(d_stringify_avg.toFixed(3));
-    $('#val_stringify_max').text(d_stringify_max.toFixed(3));
+    $('#val_stringify_min').text(results.stringify.min.toFixed(3));
+    $('#val_stringify_avg').text(results.stringify.avg.toFixed(3));
+    $('#val_stringify_max').text(results.stringify.max.toFixed(3));
 
-    $('#val_send_min').text(d_send_min.toFixed(3));
-    $('#val_send_avg').text(d_send_avg.toFixed(3));
-    $('#val_send_max').text(d_send_max.toFixed(3));
+    $('#val_send_min').text(results.send.min.toFixed(3));
+    $('#val_send_avg').text(results.send.avg.toFixed(3));
+    $('#val_send_max').text(results.send.max.toFixed(3));
   
-    $('#val_transport_min').text(d_transport_min.toFixed(3));
-    $('#val_transport_avg').text(d_transport_avg.toFixed(3));
-    $('#val_transport_max').text(d_transport_max.toFixed(3));
+    $('#val_transport_min').text(results.transport.min.toFixed(3));
+    $('#val_transport_avg').text(results.transport.avg.toFixed(3));
+    $('#val_transport_max').text(results.transport.max.toFixed(3));
 
-    $('#val_parse_min').text(d_parse_min.toFixed(3));
-    $('#val_parse_avg').text(d_parse_avg.toFixed(3));
-    $('#val_parse_max').text(d_parse_max.toFixed(3));
+    $('#val_parse_min').text(results.parse.min.toFixed(3));
+    $('#val_parse_avg').text(results.parse.avg.toFixed(3));
+    $('#val_parse_max').text(results.parse.max.toFixed(3));
 
-    $('#val_sum_min').text(d_sum_min.toFixed(3));
-    $('#val_sum_avg').text(d_sum_avg.toFixed(3));
-    $('#val_sum_max').text(d_sum_max.toFixed(3));
+    $('#val_sum_min').text(results.sum.min.toFixed(3));
+    $('#val_sum_avg').text(results.sum.avg.toFixed(3));
+    $('#val_sum_max').text(results.sum.max.toFixed(3));
 
     // tick next frame 
     window.requestAnimationFrame(updateUI);

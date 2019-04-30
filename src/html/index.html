@@ -16,6 +16,12 @@
     td.max { 
       padding-right: 1.2rem; 
     }
+    pre {
+      background-color: beige;
+      font-size: 0.75rem;
+      word-wrap: force;
+      line-break: normal;
+    }
     </style>
   </head>
 
@@ -24,8 +30,7 @@
     <p>
       This tool sends a RSI encoded fake Message to the server and evaluates the travel time back and forth. This of course means that the measurements include JSON.stringify() and JSON.parse() in the process. The tool subtracts these times.
     </p>
-    <p id="fakeMessageSize"></p>
-    <pre id="fakeMessage"></pre>
+    <p><div>Message size:</div><div id="fakeMessageSize"></div></p>
     <table>
       <tr>
         <th style="min-width:100px">
@@ -151,5 +156,7 @@
       <button id="btnStop" type="button" disabled>Stop</button>
 	  <button id="btnReset" type="button">Reset</button>
     </p>
+
+    <pre id="fakeMessage"></pre>
   </body>
 </html>
