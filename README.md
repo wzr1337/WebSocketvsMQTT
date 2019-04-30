@@ -49,7 +49,7 @@ but:
 
 An application sends messages to an echo server / broker and is responded with the same message. The messages are timestamped to allow traveltime calculations. The nunmber of messages and the total travel time is measured.
 
-![general Architecture](./assets/MQTTvsRSI Architecture.png) For evaluation, the messages travel time is devided into half to calculate the "server 2 client latency" for WebSockets. As per design the MQTT services and applications will always have a broker between them, therefore traveltime must not be devided into half.
+![general Architecture](./assets/MQTTvsRSIArchitecture.png) For evaluation, the messages travel time is devided into half to calculate the "server 2 client latency" for WebSockets. As per design the MQTT services and applications will always have a broker between them, therefore traveltime must not be devided into half.
 
 ### Compression
 
