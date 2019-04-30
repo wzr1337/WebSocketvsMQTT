@@ -29,6 +29,8 @@ So these things need to be built on application level and because all of it has 
 
 ### RSI/WebSockets
 
+based on [RESTful Service interface](https://www.w3.org/Submission/viwi-protocol/) framework
+
 downsides:
 - not yet standard
 - not of-the-shelf solutions offered by the big players
