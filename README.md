@@ -10,7 +10,7 @@ All the big cloud provider offer MQTT solutions to connect [Internet of Things](
 
 ### MQTT
 
-[MQTT](https://en.wikipedia.org/wiki/MQTT) is very stroing when it comes to:
+[MQTT](https://en.wikipedia.org/wiki/MQTT) is very strong when it comes to:
 
 * low(est) overhead
 * low power consumption (CPU)
@@ -31,7 +31,7 @@ So these things need to be built on application level and because all of it has 
 
 downsides:
 - not yet standard
-- not of the shelf solutions
+- not of-the-shelf solutions offered by the big players
 - no Quality of service adaptation built-in
 - not optimized for low power consumption
 
