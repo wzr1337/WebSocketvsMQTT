@@ -79,7 +79,8 @@ e.g. http://127.0.0.1:3000
 
 ## Tests
 
-JSON payload serialized
+### JSON payload
+Using JSON as a payload
 
 ```
 throughput MByte/s with compression
@@ -96,5 +97,5 @@ bandwidth consumed MByte/1000msg compression (incl. protocol layer overhead)
   package size 256 Byte / 1kB / 10kB / 128kB
 ```
 
-protobuf as a competitor?
-* Why not?
+### protobuf
+As a competitor to JSON, proobuf my be used, as it comes with 'compression' natively and is therefore widely adopted in the IoT space
